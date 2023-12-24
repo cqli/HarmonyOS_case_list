@@ -1,0 +1,24 @@
+{
+  "color": [
+    {
+      "name": "common_white",
+      "value": "#ffffff"
+    },
+    {
+      "name": "common_color_page_bg",
+      "value": "#F5F5F5"
+    },
+    {
+      "name": "common_color_text_hint",
+      "value": "#999999"
+    },
+    {
+      "name": "common_text_black",
+      "value": "#222222"
+    },
+    {
+      "name": "common_text_gray",
+      "value": "#999999"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "net_library",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

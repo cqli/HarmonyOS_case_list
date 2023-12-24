@@ -1,0 +1,99 @@
+{
+  "color": [
+    {
+      "name": "start_window_background",
+      "value": "#FFFFFF"
+    },
+    {
+      "name": "copyright_text",
+      "value": "#99182431"
+    },
+    {
+      "name": "title",
+      "value": "#182431"
+    },
+    {
+      "name": "rect_area_background",
+      "value": "#4D000000"
+    },
+    {
+      "name": "rect_stroke",
+      "value": "#99FFFFFF"
+    },
+
+    {
+      "name": "olive",
+      "value": "#808000"
+    },
+    {
+      "name": "olive_drab",
+      "value": "#556B2F"
+    },
+
+    {
+      "name": "teal",
+      "value": "#008080"
+    },
+
+    {
+      "name": "dark_orange",
+      "value": "#FF8C00"
+    },
+    {
+      "name": "common_white",
+      "value": "#ffffff"
+    },
+    {
+      "name": "common_color_page_bg",
+      "value": "#F5F5F5"
+    },
+    {
+      "name": "common_color_text_hint",
+      "value": "#999999"
+    },
+    {
+      "name": "common_text_black",
+      "value": "#222222"
+    },
+    {
+      "name": "bottom_tabs_font_color_selected",
+      "value": "#007DFF"
+    },
+    {
+      "name": "common_text_gray",
+      "value": "#999999"
+    },
+    {
+      "name": "common_color_main_15",
+      "value": "#DFDBD9"
+    },
+    {
+      "name": "common_color_light",
+      "value": "#FF5000"
+    },
+    {
+      "name": "mine_line_bg",
+      "value": "#F1F1F1"
+    },
+    {
+      "name": "classify_background",
+      "value": "#0D182431"
+    },
+    {
+      "name": "base_background",
+      "value": "#F1F3F5"
+    },
+    {
+      "name": "base_font_color",
+      "value": "#182431"
+    },
+    {
+      "name": "normal_font_color",
+      "value": "#99182431"
+    },
+    {
+      "name": "price_color",
+      "value": "#FA2A2D"
+    }
+  ]
+}

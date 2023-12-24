@@ -1,0 +1,56 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "This module template implements Splash Screen functions."
+    },
+    {
+      "name": "main_page_content",
+      "value": "Hello World"
+    },
+    {
+      "name": "ability_desc",
+      "value": "This ability loads SplashScreenPage."
+    },
+    {
+      "name": "ability_label",
+      "value": "阿强的HOS"
+    },
+    {
+      "name": "copyright",
+      "value": "Copyright @2021-2027 xx Company"
+    },
+    {
+      "name": "skip",
+      "value": "Skip %d"
+    },
+    {
+      "name": "copyright_title",
+      "value": "Video"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "阿强的HOS"
+    },
+    {
+      "name": "bottom_tab_home",
+      "value": "首页"
+    },
+    {
+      "name": "bottom_tab_classes",
+      "value": "分类"
+    },
+    {
+      "name": "bottom_tab_project",
+      "value": "项目"
+    },
+    {
+      "name": "bottom_tab_cart",
+      "value": "问答"
+    },
+    {
+      "name": "bottom_tab_me",
+      "value": "我的"
+    }
+  ]
+}

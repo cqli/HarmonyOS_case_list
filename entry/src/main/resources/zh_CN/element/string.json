@@ -1,0 +1,96 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "阿强的HOS"
+    },
+    {
+      "name": "main_page_content",
+      "value": "你好，世界"
+    },
+    {
+      "name": "ability_desc",
+      "value": "该Ability加载显示主Page的内容"
+    },
+    {
+      "name": "ability_label",
+      "value": "阿强的HOS"
+    },
+    {
+      "name": "copyright",
+      "value": "版权所有 @2021-2027 xx公司"
+    },
+    {
+      "name": "skip",
+      "value": "跳过 %d"
+    },
+    {
+      "name": "copyright_title",
+      "value": "视频"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "阿强的HOS"
+    },
+    {
+      "name": "bottom_tab_home",
+      "value": "首页"
+    },
+    {
+      "name": "bottom_tab_classes",
+      "value": "分类"
+    },
+    {
+      "name": "bottom_tab_project",
+      "value": "项目"
+    },
+    {
+      "name": "bottom_tab_cart",
+      "value": "问答"
+    },
+    {
+      "name": "bottom_tab_me",
+      "value": "我的"
+    },
+    {
+      "name": "mine_no_login_title",
+      "value": "登录/注册"
+    },
+    {
+      "name": "cart_title_name",
+      "value": "购物车"
+    },
+    {
+      "name": "http_error_message",
+      "value": "网络请求失败，请稍后尝试！"
+    },
+    {
+      "name": "page_none_msg",
+      "value": "网络加载失败"
+    },
+    {
+      "name": "refresh_default_header_hint",
+      "value": "下拉刷新"
+    },
+    {
+      "name": "refresh_default_header_load",
+      "value": "松开刷新"
+    },
+    {
+      "name": "refresh_default_header_loading",
+      "value": "正在刷新..."
+    },
+    {
+      "name": "refresh_default_load_more_loading",
+      "value": "正在加载..."
+    },
+    {
+      "name": "refresh_default_load_more_complete",
+      "value": "加载完成"
+    },
+    {
+      "name": "refresh_default_load_more_no_data",
+      "value": "没有更多数据了"
+    }
+  ]
+}

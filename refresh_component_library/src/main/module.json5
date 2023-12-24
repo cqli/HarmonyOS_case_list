@@ -1,0 +1,10 @@
+{
+  "module": {
+    "name": "refresh_component_library",
+    "type": "har",
+    "deviceTypes": [
+      "default",
+      "tablet"
+    ]
+  }
+}

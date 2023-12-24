@@ -1,0 +1,53 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/jacky/.ohos/config/auto_debug_HOSProjectCaseList_com.yufu.shop_890086000300133873.cer",
+          "storePassword": "0000001B5C31A71F94C5227CFEE7CCFB1C2FBDC3E052721CA1494C7B802099DD240DE9D0B986E8434BF2C8",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B029E215003C339100A51F501C575A6E0AD1A76DB934F70B88D646B6001B6B0B7B37CD8F2BBB22A",
+          "profile": "/Users/jacky/.ohos/config/auto_debug_HOSProjectCaseList_com.yufu.shop_890086000300133873.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/jacky/.ohos/config/auto_debug_HOSProjectCaseList_com.yufu.shop_890086000300133873.p12"
+        }
+      }
+    ],
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "common_library",
+      "srcPath": "./common_library"
+    },
+    {
+      "name": "refresh_component_library",
+      "srcPath": "./refresh_component_library"
+    },
+    {
+      "name": "net_library",
+      "srcPath": "./net_library"
+    }
+  ]
+}

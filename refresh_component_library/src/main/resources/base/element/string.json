@@ -1,0 +1,32 @@
+{
+  "string": [
+    {
+      "name": "page_show",
+      "value": "page from npm package"
+    },
+    {
+      "name": "refresh_default_header_hint",
+      "value": "下拉刷新"
+    },
+    {
+      "name": "refresh_default_header_load",
+      "value": "松开刷新"
+    },
+    {
+      "name": "refresh_default_header_loading",
+      "value": "正在刷新..."
+    },
+    {
+      "name": "refresh_default_load_more_loading",
+      "value": "正在加载..."
+    },
+    {
+      "name": "refresh_default_load_more_complete",
+      "value": "加载完成"
+    },
+    {
+      "name": "refresh_default_load_more_no_data",
+      "value": "没有更多数据了"
+    }
+  ]
+}
