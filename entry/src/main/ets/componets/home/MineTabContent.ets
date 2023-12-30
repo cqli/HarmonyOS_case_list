@@ -2,10 +2,10 @@
  * 该组件为主界面第四个标签页面。
  * 该标签页显示个人设定信息界面
  */
+import { AppUtils } from '../../utils/AppUtils'
 
 @Component
 export struct MineTabContent {
-  @Prop topBarHeight: number
 
   build() {
     Stack({ alignContent: Alignment.Top }) {
@@ -48,7 +48,7 @@ export struct MineTabContent {
       }
       .height('100%')
       .width('100%')
-      .padding({ left: 15, right: 15, top: this.topBarHeight })
+      .padding({ left: 15, right: 15, top:AppUtils.getInstance().getStateBarHeight() })
 
     }
     .width('100%')
@@ -65,7 +65,7 @@ export struct MineTabContent {
 struct FoodImageDisplayPreview {
   build() {
     Flex() {
-      MineTabContent({ topBarHeight: 20 })
+      MineTabContent()
     }
   }
 }

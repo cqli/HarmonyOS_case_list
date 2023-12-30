@@ -12,10 +12,11 @@ import { Constants } from '../../common/constants/Constants';
 import logUtils from '../../../../../../common_library/src/main/ets/utils/LogUtils';
 import ClassifyItem from '../../view/category/ClassityItem';
 import CourseItem from '../../view/category/CourseItem';
+import { AppUtils } from '../../utils/AppUtils';
 
 @Component
 export struct CategoryTabContent {
-  @Prop topBarHeight: number
+
   @State currentClassify: number = 0; // selected classify index.
   @State requestSuccess: boolean = false; // is loading data.
   private classifyList: Array<TreeItem> = [];
@@ -115,7 +116,7 @@ export struct CategoryTabContent {
           .width(Constants.FULL_LENGTH)
       }
     }
-    .padding({ top: this.topBarHeight, })
+    .padding({ top: AppUtils.getInstance().getStateBarHeight() })
     .backgroundColor($r('app.color.base_background'))
   }
 }

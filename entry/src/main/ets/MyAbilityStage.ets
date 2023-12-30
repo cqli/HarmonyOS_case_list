@@ -1,6 +1,8 @@
 // import { Net } from '@app/net/src/main/ets/utils/Net';
 import AbilityStage from '@ohos.app.ability.AbilityStage';
+import window from '@ohos.window';
 import HttpConfig from './http/HttpConfig';
+import { AppUtils } from './utils/AppUtils';
 // import { MyNetErrorInterceptor } from './http/MyNetErrorInterceptor';
 // import { MyNetHeaderInterceptor } from './http/MyNetHeaderInterceptor';
 
@@ -10,6 +12,7 @@ import HttpConfig from './http/HttpConfig';
  */
 export default class MyAbilityStage extends AbilityStage {
   onCreate() {
+
     // 应用的HAP在首次加载的时，为该Module初始化操作
     let xClient = {
       "channelId": "1",

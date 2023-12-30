@@ -122,7 +122,6 @@ export default struct RefreshDefaultHeader {
     }.width(Constants.FULL_LENGTH)
     .height(Constants.FULL_LENGTH)
     .justifyContent(FlexAlign.Center)
-    .backgroundColor($r('app.color.dark_orange'))
 
   }
 }

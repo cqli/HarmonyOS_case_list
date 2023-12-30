@@ -16,7 +16,6 @@ export default struct RefreshComponent {
   private onRefresh?: () => void;
   private onLoadMore?: () => void;
   private onItemClick?: (item: any) => void;
-  @State headerOffset: number = 0;
   @Provide(RefreshConstants.REFRESH_STATE_TAG) @Watch('onStateChanged') state: number = RefreshState.IDLE;
   @Provide(RefreshConstants.LOAD_MORE_STATE_TAG) @Watch('onLoadMorStateChanged') loadMoreState: number = RefreshState.LOAD_MORE_COMPLETE;
   @BuilderParam itemLayout?: (item: any, index: number) => void;
@@ -25,6 +24,8 @@ export default struct RefreshComponent {
   private offsetY: number = 0
   private downY: number = 0
   private isCanLoadMore: boolean = true
+  @Prop private marginHeader: number;
+  @State headerOffset: number = -RefreshConstants.REFRESH_HEADER_HEIGHT + this.marginHeader;
   /**
    * 更新列表数据
    */
@@ -64,7 +65,7 @@ export default struct RefreshComponent {
         }
         break;
       case RefreshState.COMPLETE:
-        this.headerOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT;
+        this.headerOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT + this.marginHeader;
         this.state = RefreshState.IDLE;
         break;
 
@@ -87,107 +88,111 @@ export default struct RefreshComponent {
 
   aboutToAppear() {
     if (this.state === RefreshState.REFRESHING) {
-      this.headerOffset = 0;
+      this.headerOffset = 0 + this.marginHeader;
       this.onStateChanged();
     } else {
       this.state = RefreshState.IDLE;
-      this.headerOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT;
+      this.headerOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT + this.marginHeader;
     }
   }
 
   build() {
-    List({ scroller: this.listController }) {
-      ListItem() {
-        Column() {
-          if (this.headerStyle === RefreshHeaderStyle.DEFAULT) {
-            RefreshDefaultHeader().height(RefreshConstants.REFRESH_HEADER_HEIGHT)
-          } else if (this.headerStyle === RefreshHeaderStyle.CLOUD) {
-            RefreshAnimHeader().height(RefreshConstants.REFRESH_HEADER_HEIGHT)
-          }
-
-        }
-        .width(Constants.FULL_LENGTH)
-        .height(RefreshConstants.REFRESH_HEADER_HEIGHT)
-      }
-
-      LazyForEach(this.data, (item, index) => {
-
+    Column() {
+      List({ scroller: this.listController }) {
         ListItem() {
-          this.itemLayout(item, index)
-        }
-        .onClick(() => {
-          this.onItemClick(item)
-        })
-      })
-      ListItem() {
-        Column() {
-          LoadMoreLayout()
-        }
-        .width(Constants.FULL_LENGTH)
-      }
-    }
-    .edgeEffect(EdgeEffect.Spring)
-    .width(Constants.FULL_LENGTH)
-    .height('95%')
-    .listDirection(Axis.Vertical)
-    .offset({ y: this.headerOffset })
-    .onScrollIndex((startIndex, endIndex) => {
-      this.mEndIndex = endIndex
-      if ((this.mEndIndex === this.data.totalCount() - 1 || this.mEndIndex === this.data.totalCount())
-      && this.loadMoreState !== RefreshState.LOAD_MORE_ING) {
-        if (this.isCanLoadMore) {
-          this.loadMoreState = RefreshState.LOAD_MORE_ING;
-        }
-      }
-    })
-    .animation({
-      curve: Curve.Smooth,
-      duration: RefreshConstants.REFRESH_HEADER_ANIM_DURATION,
-      playMode: PlayMode.Normal,
-      onFinish: () => {
-        if (this.headerOffset === -RefreshConstants.REFRESH_HEADER_HEIGHT) {
-          this.state = RefreshState.IDLE;
-        }
-      }
-    })
-    .backgroundColor($r('app.color.olive'))
-    .onTouch((event?: TouchEvent) => {
-      if (!event) {
-        return;
-      }
-      switch (event.type) {
-        case TouchType.Down:
-          this.downY = event.touches[0].y;
-          if (this.state === RefreshState.IDLE) {
-            this.state = RefreshState.DRAGGING;
-          }
-          break;
-        case TouchType.Move:
-          if (this.state === RefreshState.DRAGGING && this.listController.currentOffset()
-            .yOffset <= -RefreshConstants.REFRESH_EFFECTIVE_HEIGHT) {
-            this.state = RefreshState.DRAGGING_REFRESHABLE;
-          } else if (this.state === RefreshState.DRAGGING && this.listController.currentOffset().yOffset === 0) {
-            //触发下拉刷新
-            this.offsetY = event.touches[0].y - this.downY;
-            if (this.offsetY > 0 && Math.abs(this.offsetY) - RefreshConstants.REFRESH_EFFECTIVE_HEIGHT > 0) {
-              this.state = RefreshState.DRAGGING_REFRESHABLE;
+          Column() {
+            if (this.headerStyle === RefreshHeaderStyle.DEFAULT) {
+              RefreshDefaultHeader().height(RefreshConstants.REFRESH_HEADER_HEIGHT)
+            } else if (this.headerStyle === RefreshHeaderStyle.CLOUD) {
+              RefreshAnimHeader().height(RefreshConstants.REFRESH_HEADER_HEIGHT)
             }
+
           }
-          break;
-        case TouchType.Up:
-          if (this.state === RefreshState.DRAGGING_REFRESHABLE) {
-            this.headerOffset = 0;
-            this.state = RefreshState.REFRESHING;
-          } else if (this.state === RefreshState.DRAGGING) {
+          .width(Constants.FULL_LENGTH)
+          .height(RefreshConstants.REFRESH_HEADER_HEIGHT)
+        }
+
+        LazyForEach(this.data, (item, index) => {
+
+          ListItem() {
+            this.itemLayout(item, index)
+          }
+          .onClick(() => {
+            this.onItemClick(item)
+          })
+        })
+        ListItem() {
+          Column() {
+            LoadMoreLayout()
+          }
+          .width(Constants.FULL_LENGTH)
+        }
+      }
+      .edgeEffect(EdgeEffect.Spring)
+      .width(Constants.FULL_LENGTH)
+      .listDirection(Axis.Vertical)
+      .margin({ top: this.headerOffset })
+      // .offset({ y: this.headerOffset })
+      .onScrollIndex((startIndex, endIndex) => {
+        this.mEndIndex = endIndex
+        if ((this.mEndIndex === this.data.totalCount() - 1 || this.mEndIndex === this.data.totalCount())
+        && this.loadMoreState !== RefreshState.LOAD_MORE_ING) {
+          if (this.isCanLoadMore) {
+            this.loadMoreState = RefreshState.LOAD_MORE_ING;
+          }
+        }
+      })
+      .animation({
+        curve: Curve.Smooth,
+        duration: RefreshConstants.REFRESH_HEADER_ANIM_DURATION,
+        playMode: PlayMode.Normal,
+        onFinish: () => {
+          if (this.headerOffset === -RefreshConstants.REFRESH_HEADER_HEIGHT) {
             this.state = RefreshState.IDLE;
           }
+        }
+      })
+      .onTouch((event?: TouchEvent) => {
+        if (!event) {
+          return;
+        }
+        switch (event.type) {
+          case TouchType.Down:
+            this.downY = event.touches[0].y;
+            if (this.state === RefreshState.IDLE) {
+              this.state = RefreshState.DRAGGING;
+            }
+            break;
+          case TouchType.Move:
+            if (this.state === RefreshState.DRAGGING && this.listController.currentOffset()
+              .yOffset <= -RefreshConstants.REFRESH_EFFECTIVE_HEIGHT) {
+              this.state = RefreshState.DRAGGING_REFRESHABLE;
+            } else if (this.state === RefreshState.DRAGGING && this.listController.currentOffset().yOffset === 0) {
+              //触发下拉刷新
+              this.offsetY = event.touches[0].y - this.downY;
+              if (this.offsetY > 0 && Math.abs(this.offsetY) - RefreshConstants.REFRESH_EFFECTIVE_HEIGHT > 0) {
+                this.state = RefreshState.DRAGGING_REFRESHABLE;
+              }
+            }
+            break;
+          case TouchType.Up:
+            if (this.state === RefreshState.DRAGGING_REFRESHABLE) {
+              this.headerOffset = 0 + this.marginHeader;
+              this.state = RefreshState.REFRESHING;
+            } else if (this.state === RefreshState.DRAGGING) {
+              this.state = RefreshState.IDLE;
+            }
 
 
-          break;
-        default:
-          break;
-      }
-    })
+            break;
+          default:
+            break;
+        }
+      })
+    }
+    .height('100%')
+    .width('100%')
+
   }
 }
 

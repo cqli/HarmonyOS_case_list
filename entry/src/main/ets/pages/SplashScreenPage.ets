@@ -2,6 +2,7 @@ import router from '@ohos.router';
 import window from '@ohos.window';
 import { Constants } from '../common/constants/Constants';
 import { PageUrl } from '../common/constants/PageUrl';
+import { AppUtils } from '../utils/AppUtils';
 
 /**
  * SplashScreenPage is the entry of the application and shows how to develop a front page.
@@ -11,6 +12,18 @@ import { PageUrl } from '../common/constants/PageUrl';
 @Entry
 @Component
 struct SplashScreenPage {
+  aboutToAppear(){
+    window.getLastWindow(getContext(this), (err, data) => {
+      if (err.code === 0) {
+        data.setWindowLayoutFullScreen(true)
+        AppUtils.getInstance().setStateBarHeight(px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+          .topRect.height))
+
+        AppUtils.getInstance().setBottomBarHeight(px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+          .bottomRect.height))
+      }
+    })
+  }
   @State pageShowTime: number = 0;
   @State intervalID: number = 0;
   @State topBarHeight: number = 0
@@ -49,7 +62,7 @@ struct SplashScreenPage {
     })
     this.intervalID = setInterval(() => {
       this.pageShowTime += 1
-      if (this.pageShowTime > Constants.DELAY_SECONDS) {
+      if (this.pageShowTime = Constants.DELAY_SECONDS) {
         router.replaceUrl({
           url: PageUrl.MAIN_PAGE_URL
         });

@@ -5,6 +5,7 @@ import { CartTabContent } from '../componets/home/CartTabContent';
 import { HomeTabContent } from '../componets/home/HomeTabContent';
 import { MineTabContent } from '../componets/home/MineTabContent';
 import { AnswersTabContent } from '../componets/home/AnswersContent';
+import { AppUtils } from '../utils/AppUtils';
 
 /**
  * The MainPage that is routed as the SplashScreenPage.
@@ -17,27 +18,8 @@ struct MainPage {
    * 底部tab选中index
    */
   @State bottomTabIndex: number = 0
-  /**
-   * 顶部状态栏高度
-   */
-  @State stateBarHeight: number = 0
-
-  /**
-   * 底部状态栏高度
-   */
-  @State bottomStateBarHeight: number = 0
 
   onPageShow() {
-    window.getLastWindow(getContext(this), (err, data) => {
-      if (err.code === 0) {
-        data.setWindowLayoutFullScreen(true)
-        this.stateBarHeight =
-        px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
-          .topRect.height)
-        this.bottomStateBarHeight = px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
-          .bottomRect.height)
-      }
-    })
   }
   /**
    * tab 资源信息
@@ -51,24 +33,24 @@ struct MainPage {
        */
       Tabs({ barPosition: BarPosition.End, index: 0, controller: this.controller }) {
         TabContent() {
-          HomeTabContent({ topBarHeight: this.stateBarHeight })
+          HomeTabContent()
         }
 
         TabContent() {
-          CategoryTabContent({ topBarHeight: this.stateBarHeight })
+          CategoryTabContent()
         }
 
         TabContent() {
-          AnswersTabContent({ topBarHeight: this.stateBarHeight })
+          AnswersTabContent()
         }
 
 
         TabContent() {
-          CartTabContent({ topBarHeight: this.stateBarHeight })
+          CartTabContent()
         }
 
         TabContent() {
-          MineTabContent({ topBarHeight: this.stateBarHeight })
+          MineTabContent()
         }
       }
       .onChange((index: number) => {
@@ -91,6 +73,6 @@ struct MainPage {
     .backgroundColor($r('app.color.common_white'))
     .width('100%')
     .height('100%')
-    .padding({ bottom: this.bottomStateBarHeight })
+    .padding({ bottom: AppUtils.getInstance().getBottomBarHeight() })
   }
 }

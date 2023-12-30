@@ -12,6 +12,7 @@ import { HomeBannerItem } from '../../view/home/HomeBannerItem';
 import { Banner } from '../../bean/BannerBean';
 import router from '@ohos.router';
 import { PageUrl } from '../../common/constants/PageUrl';
+import { AppUtils } from '../../utils/AppUtils';
 /**
  * 首页
  */
@@ -19,9 +20,10 @@ import { PageUrl } from '../../common/constants/PageUrl';
 export struct HomeTabContent {
   @State modules?: ArrayList<Article> = new ArrayList<Article>();
   @State banners?: Array<Banner> = new Array<Banner>();
-  @Prop topBarHeight: number
-  private deviceDisplay: display.Display = GlobalContext.getContext().getObject('display') as display.Display;
+  @State marginHeader: number = 150
   private mPage = 0;
+
+
 
   aboutToAppear() {
 
@@ -44,9 +46,9 @@ export struct HomeTabContent {
     Stack() {
       HomeBannerItem({ data: $banners })
         .width('100%')
-        .height(150 + this.topBarHeight)
+        .height(150 + AppUtils.getInstance().getStateBarHeight())
         .backgroundColor($r('app.color.common_color_page_bg'))
-        .padding({ top: this.topBarHeight })
+        .padding({ top: AppUtils.getInstance().getStateBarHeight() })
         .zIndex(Constants.FILE_MANAGER_Z_INDEX)
 
       RefreshComponent({
@@ -75,12 +77,13 @@ export struct HomeTabContent {
               linkUrl: item.link
             }
           });
-        }
+        },
+        marginHeader: this.marginHeader +AppUtils.getInstance().getStateBarHeight()
       })
         .width(Constants.FULL_LENGTH)
         .height(Constants.FULL_LENGTH)
-        .margin({ top: 150 + this.topBarHeight })
-        .padding({ bottom: 80 + this.topBarHeight })
+      // .margin({ top: 150 + this.topBarHeight })
+      // .padding({ bottom: 80 + this.topBarHeight })
     }
     .height('100%')
     .alignContent(Alignment.Top)
@@ -95,7 +98,7 @@ export struct HomeTabContent {
 struct FoodImageDisplayPreview {
   build() {
     Flex() {
-      HomeTabContent({ topBarHeight: 20 })
+      HomeTabContent()
     }
   }
 }

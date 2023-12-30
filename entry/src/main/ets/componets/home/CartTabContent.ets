@@ -9,6 +9,7 @@ import display from '@ohos.display'
 import { GlobalContext } from '../../utils/GlobalContext'
 import RefreshComponent from '../../view/refresh/RefreshComponent'
 import { SmartRefreshLayout } from 'smart_refresh/src/main/ets/components/smart_refresh/SmartRefreshLayout'
+import { AppUtils } from '../../utils/AppUtils'
 /**
  * 卡管理
  */
@@ -17,7 +18,6 @@ export struct CartTabContent {
   // @State controller: RefreshController = new RefreshController() //刷新控制器
   @State array: Array<number> = []
   @State mAddressBean: AddressBean = null
-  @Prop topBarHeight: number
   @Provide(RefreshConstants.REFRESH_STATE_TAG) state: number = RefreshState.REFRESHING;
   private deviceDisplay: display.Display = GlobalContext.getContext().getObject('display') as display.Display;
 
@@ -69,7 +69,7 @@ export struct CartTabContent {
       //   .margin({ top: DimensionUtil.getVp($r('app.float.file_index_title_height')) })
     }
 
-    .padding({ top: this.topBarHeight })
+    .padding({ top: AppUtils.getInstance().getStateBarHeight()})
     .height('100%')
     .backgroundColor($r('app.color.common_color_page_bg'))
   }
@@ -80,7 +80,7 @@ export struct CartTabContent {
 struct preCart {
   build() {
     Flex() {
-      CartTabContent({ topBarHeight: 10 })
+      CartTabContent()
     }
   }
 }

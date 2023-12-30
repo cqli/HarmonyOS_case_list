@@ -8,6 +8,8 @@
   "version": "1.0.0",
   "dependencies": {
     "common_library": "file:../common_library",
-    "smart_refresh": "file:../refresh_component_library"
+    "smart_refresh": "file:../refresh_component_library",
+    "@app/net": "file:./libs/net.har",
+    "@app/refresh": "file:./libs/refresh-1.0.0.har"
   }
 }
