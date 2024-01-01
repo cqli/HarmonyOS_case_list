@@ -2,6 +2,7 @@
   "src": [
     "pages/SplashScreenPage",
     "pages/MainPage",
-    "pages/WebViewPage"
+    "pages/WebViewPage",
+    "pages/LoginPage"
   ]
 }

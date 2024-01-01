@@ -3,7 +3,8 @@
  */
 import { Article } from '../../bean/HomeModule';
 import { Constants } from '../../common/constants/Constants';
-import * as  AppUtils from '../../utils/AppUtils'
+import * as AppUtils from '../../utils/AppUtils'
+
 @Component
 export default struct ArticleItem {
   article: Article = new Article()
@@ -43,33 +44,27 @@ export default struct ArticleItem {
     Column() {
       //第一行
       Row() {
-
         //1-tag
         if (this.hasTag) {
-          Text(this.tag)
+          Text(this.tag + '~')
             .height($r('app.float.23vp'))
-            .fontSize($r('app.float.12fp'))
-            .textAlign(TextAlign.Center)
-            .borderRadius($r('app.float.3vp'))
-            .fontColor($r('app.color.common_white'))
-            .backgroundColor('red')
-            .padding({
-              left: $r('app.float.10vp'),
-              right: $r('app.float.10vp'),
-              top: $r('app.float.5vp'),
-              bottom: $r('app.float.5vp')
-            })
+            .fontSize($r('app.float.16fp'))
+            .fontColor($r('app.color.common_text_black'))
         }
         Row() {
-          Image($r('app.media.app_icon')).width($r('app.float.18vp')).height($r('app.float.18vp'))
-          Text(this.author.toString()).margin({ left: $r('app.float.5vp') }) //2-author
-        }.margin({ left: $r('app.float.5vp'), right: $r('app.float.5vp') })
+          Image($r('app.media.wan'))
+            .width($r('app.float.18vp'))
+            .height($r('app.float.18vp'))
+            .clip(new Circle({ width: 18, height: 18 }))
+          Text(this.author.toString())
+            .fontSize($r('app.float.16fp')) //2-author
+        }
 
         Row() {
-          Image($r('app.media.app_icon')).width($r('app.float.18vp')).height($r('app.float.18vp'))
           Text(this.article.niceDate) //3-time
         }
-      }.width(Constants.FULL_LENGTH).justifyContent(FlexAlign.SpaceBetween)
+      }.width(Constants.FULL_LENGTH)
+      .justifyContent(FlexAlign.SpaceBetween)
       //第2行
       Flex({ direction: FlexDirection.Row }) {
         Column() {
@@ -79,14 +74,15 @@ export default struct ArticleItem {
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .fontSize($r('app.float.18fp'))
             .fontColor(Color.Black)
+            .fontWeight(FontWeight.Bold)
             .align(Alignment.TopStart)
           Text(this.desc)
             //.width(Constants.FULL_LENGTH)
-            .maxLines(2)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .fontColor(Color.Gray)
+            .margin({ top: 10 })
             .align(Alignment.TopStart)
-        }.flexGrow(1)
+        }
         //.width('70%')
         .alignItems(HorizontalAlign.Start)
 
@@ -96,64 +92,40 @@ export default struct ArticleItem {
             .width($r('app.float.60vp'))
             .height('100%')
         }
-      }.height($r('app.float.80vp')).margin({ top: $r('app.float.5vp') })
+      }
+      .margin({ top: $r('app.float.5vp') })
       //第3行
       Row() {
         //置顶
         if (this.isTop) {
-          Text('置顶')
+          Text('置顶' + '~')
             .height($r('app.float.23vp'))
-            .fontSize($r('app.float.12fp'))
-            .borderRadius($r('app.float.3vp'))
+            .fontSize($r('app.float.16fp'))
             .textAlign(TextAlign.Center)
-            .fontColor($r('app.color.common_white'))
-            .backgroundColor($r('app.color.dark_orange'))
-            .padding({
-              left: $r('app.float.10vp'),
-              right: $r('app.float.10vp'),
-              top: $r('app.float.5vp'),
-              bottom: $r('app.float.5vp')
-            })
-            .margin({ right: $r('app.float.10vp') })
+            .fontColor($r('app.color.common_text_black'))
         }
 
         if (this.hasSuperChapterName) {
-          Text(this.superChapterName)
+          Text(this.superChapterName + '~')
             .height($r('app.float.23vp'))
-            .fontSize($r('app.float.12fp'))
-            .borderRadius($r('app.float.3vp'))
+            .fontSize($r('app.float.16fp'))
             .textAlign(TextAlign.Center)
-            .fontColor($r('app.color.common_white'))
-            .backgroundColor($r('app.color.olive'))
-            .padding({
-              left: $r('app.float.10vp'),
-              right: $r('app.float.10vp'),
-              top: $r('app.float.5vp'),
-              bottom: $r('app.float.5vp')
-            })
-            .margin({ right: $r('app.float.10vp') })
+            .fontColor($r('app.color.common_text_black'))
         }
         if (this.hasChapterName) {
           Text(this.chapterName)
             .height($r('app.float.23vp'))
-            .fontSize($r('app.float.12fp'))
-            .borderRadius($r('app.float.3vp'))
+            .fontSize($r('app.float.16fp'))
             .textAlign(TextAlign.Center)
-            .fontColor($r('app.color.common_white'))
-            .backgroundColor($r('app.color.teal'))
-            .padding({
-              left: $r('app.float.10vp'),
-              right: $r('app.float.10vp'),
-              top: $r('app.float.5vp'),
-              bottom: $r('app.float.5vp')
-            })
-            .margin({ right: $r('app.float.10vp') })
+            .fontColor($r('app.color.common_text_black'))
         }
-      }.width(Constants.FULL_LENGTH).justifyContent(FlexAlign.Start).margin({ top: $r('app.float.5vp') })
+      }.width(Constants.FULL_LENGTH)
+      .justifyContent(FlexAlign.Start)
+      .margin({ top: $r('app.float.5vp') })
 
     }
     //.height(160)
-    .width(Constants.FULL_LENGTH)
+    .width('100%')
     .padding({
       top: $r('app.float.5vp'),
       bottom: $r('app.float.5vp'),
@@ -163,5 +135,15 @@ export default struct ArticleItem {
     .borderWidth(0.5)
     .borderColor(Color.Gray)
     .backgroundColor('#FFF1F3F5')
+  }
+}
+
+@Preview({ title: 'item' })
+@Component
+struct itemPreView {
+  build() {
+    Flex() {
+      ArticleItem()
+    }
   }
 }

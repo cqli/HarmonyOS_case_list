@@ -9,10 +9,10 @@ import RefreshDefaultHeader from './RefreshDefaultHeader';
 
 @Component
 export default struct RefreshComponent {
-  @Link @Watch('updateList') dataList: ArrayList<any>
+  @Link @Watch('updateList') dataList: Array<any>
   private data: HomeDataSource = new HomeDataSource();
   private headerStyle: RefreshHeaderStyle = RefreshHeaderStyle.DEFAULT;
-  private listController: Scroller = new Scroller();
+  private listController: Scroller
   private onRefresh?: () => void;
   private onLoadMore?: () => void;
   private onItemClick?: (item: any) => void;
@@ -26,6 +26,7 @@ export default struct RefreshComponent {
   private isCanLoadMore: boolean = true
   @Prop private marginHeader: number;
   @State headerOffset: number = -RefreshConstants.REFRESH_HEADER_HEIGHT + this.marginHeader;
+  @State bottomOffset: number = 0
   /**
    * 更新列表数据
    */
@@ -66,6 +67,7 @@ export default struct RefreshComponent {
         break;
       case RefreshState.COMPLETE:
         this.headerOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT + this.marginHeader;
+        this.bottomOffset = 0
         this.state = RefreshState.IDLE;
         break;
 
@@ -89,10 +91,12 @@ export default struct RefreshComponent {
   aboutToAppear() {
     if (this.state === RefreshState.REFRESHING) {
       this.headerOffset = 0 + this.marginHeader;
+      this.bottomOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT
       this.onStateChanged();
     } else {
       this.state = RefreshState.IDLE;
-      this.headerOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT + this.marginHeader;
+      this.headerOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT + this.marginHeader
+      this.bottomOffset = 0
     }
   }
 
@@ -113,13 +117,14 @@ export default struct RefreshComponent {
         }
 
         LazyForEach(this.data, (item, index) => {
-
           ListItem() {
             this.itemLayout(item, index)
           }
           .onClick(() => {
             this.onItemClick(item)
           })
+        }, (item, index) => {
+          return JSON.stringify(item) + index.toString()
         })
         ListItem() {
           Column() {
@@ -131,7 +136,7 @@ export default struct RefreshComponent {
       .edgeEffect(EdgeEffect.Spring)
       .width(Constants.FULL_LENGTH)
       .listDirection(Axis.Vertical)
-      .margin({ top: this.headerOffset })
+      .margin({ top: this.headerOffset, bottom: this.bottomOffset })
       // .offset({ y: this.headerOffset })
       .onScrollIndex((startIndex, endIndex) => {
         this.mEndIndex = endIndex
@@ -178,6 +183,7 @@ export default struct RefreshComponent {
           case TouchType.Up:
             if (this.state === RefreshState.DRAGGING_REFRESHABLE) {
               this.headerOffset = 0 + this.marginHeader;
+              this.bottomOffset = -RefreshConstants.REFRESH_HEADER_HEIGHT
               this.state = RefreshState.REFRESHING;
             } else if (this.state === RefreshState.DRAGGING) {
               this.state = RefreshState.IDLE;

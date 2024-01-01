@@ -47,7 +47,8 @@
     {
       "name": "default_header_font_size",
       "value": "16"
-    }, {
+    },
+    {
       "name": "classify_item_width",
       "value": "100vp"
     },
@@ -330,6 +331,10 @@
     {
       "name": "192vp",
       "value": "192vp"
+    },
+    {
+      "name": "common_margin",
+      "value": "15vp"
     }
   ]
 }

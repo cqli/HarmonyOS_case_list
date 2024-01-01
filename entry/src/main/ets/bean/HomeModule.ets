@@ -3,12 +3,12 @@ import ArrayList from '@ohos.util.ArrayList';
  * 首页指定数据
  */
 export class ArticleTop {
-  data?: ArrayList<Article>;
+  data?: Array<Article>;
 }
 
 export class ArticleList {
   curPage: number = 0;
-  datas: ArrayList<Article>;
+  datas: Array<Article>;
   offset: number = 0;
   over: boolean = false;
   pageCount: number = 0;

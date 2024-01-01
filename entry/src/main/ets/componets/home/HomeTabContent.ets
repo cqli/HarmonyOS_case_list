@@ -13,22 +13,28 @@ import { Banner } from '../../bean/BannerBean';
 import router from '@ohos.router';
 import { PageUrl } from '../../common/constants/PageUrl';
 import { AppUtils } from '../../utils/AppUtils';
+import { BaseComponent, LOAD_EMPTY, LOAD_ERROR, LOAD_LOADING, LOAD_SHOW_CONTENT } from '../BaseComponent';
 /**
  * 首页
  */
 @Component
 export struct HomeTabContent {
-  @State modules?: ArrayList<Article> = new ArrayList<Article>();
+  @State modules?: Array<Article> = new Array<Article>();
   @State banners?: Array<Banner> = new Array<Banner>();
   @State marginHeader: number = 150
   private mPage = 0;
-
-
+  @State loadState: number = LOAD_LOADING
+  private listController: Scroller = new Scroller();
 
   aboutToAppear() {
+    getHomeInfo((data: Array<Article>) => {
+      getHomePageList(this.mPage, (pageList: Array<Article>) => {
+        this.modules = data.concat(pageList)
+        this.loadState = LOAD_SHOW_CONTENT
+      }, (netError) => {
+        this.loadState = LOAD_ERROR
+      })
 
-    getHomePageList(this.mPage).then(articleList => {
-      this.modules = articleList
     })
 
 
@@ -43,51 +49,101 @@ export struct HomeTabContent {
   }
 
   build() {
-    Stack() {
-      HomeBannerItem({ data: $banners })
+    BaseComponent({ loadingState: this.loadState }) {
+      RelativeContainer() {
+        Stack() {
+          HomeBannerItem({ data: $banners })
+            .width('100%')
+            .height(150 + AppUtils.getInstance().getStateBarHeight())
+            .backgroundColor($r('app.color.common_color_page_bg'))
+            .padding({ top: AppUtils.getInstance().getStateBarHeight() })
+            .zIndex(Constants.FILE_MANAGER_Z_INDEX)
+
+          RefreshComponent({
+            dataList: $modules,
+            listController: this.listController,
+            headerStyle: RefreshHeaderStyle.DEFAULT,
+            itemLayout: (item: any, index: number): void => this.ContentBody(item, index),
+            onRefresh: () => {
+              this.mPage = 0;
+
+              getHomePageList(this.mPage, (data) => {
+                this.modules = data
+              }, (netError) => {
+                // this.loadState = LOAD_ERROR
+              })
+            },
+
+            onLoadMore: () => {
+              this.mPage++;
+              getHomePageList(this.mPage, (data) => {
+                this.modules = data
+              }, (netError) => {
+                // this.loadState = LOAD_ERROR
+              })
+
+            },
+            onItemClick: (item: Article) => {
+              router.pushUrl({
+                url: PageUrl.WEB_VIEW_PAGE_URL,
+                params: {
+                  linkUrl: item.link
+                }
+              });
+            },
+            marginHeader: this.marginHeader + AppUtils.getInstance().getStateBarHeight()
+          })
+            .width(Constants.FULL_LENGTH)
+            .height(Constants.FULL_LENGTH)
+          // .margin({ top: 150 + this.topBarHeight })
+          // .padding({ bottom: 80 + this.topBarHeight })
+
+
+        }
+        .height('100%')
         .width('100%')
-        .height(150 + AppUtils.getInstance().getStateBarHeight())
+        .alignContent(Alignment.Top)
         .backgroundColor($r('app.color.common_color_page_bg'))
-        .padding({ top: AppUtils.getInstance().getStateBarHeight() })
-        .zIndex(Constants.FILE_MANAGER_Z_INDEX)
+        .alignRules({
+          top: { anchor: "__container__", align: VerticalAlign.Top },
+          left: { anchor: "__container__", align: HorizontalAlign.Start },
+          bottom: { anchor: "__container__", align: VerticalAlign.Bottom },
+          right: { anchor: "__container__", align: HorizontalAlign.End }
+        })
+        .id('id_stack_content')
 
-      RefreshComponent({
-        dataList: $modules,
-        headerStyle: RefreshHeaderStyle.DEFAULT,
-        itemLayout: (item: any, index: number): void => this.ContentBody(item, index),
-        onRefresh: () => {
-          this.mPage = 0;
-          getHomePageList(this.mPage).then(articleList => {
-            this.modules = articleList
-          })
-        },
-        onLoadMore: () => {
-          this.mPage++;
-          getHomePageList(this.mPage).then(data => {
-            setTimeout(() => {
-              this.modules = data
-            }, 1000)
+        Column() {
 
-          })
-        },
-        onItemClick: (item: Article) => {
-          router.pushUrl({
-            url: PageUrl.WEB_VIEW_PAGE_URL,
-            params: {
-              linkUrl: item.link
-            }
-          });
-        },
-        marginHeader: this.marginHeader +AppUtils.getInstance().getStateBarHeight()
-      })
-        .width(Constants.FULL_LENGTH)
-        .height(Constants.FULL_LENGTH)
-      // .margin({ top: 150 + this.topBarHeight })
-      // .padding({ bottom: 80 + this.topBarHeight })
+          Image($r('app.media.wan'))
+            .width(18)
+            .height(18)
+            .clip(new Circle({ width: 18, height: 18 }))
+
+          Text('To Top')
+            .margin({ top: 15 })
+            .fontColor($r('app.color.common_text_black'))
+            .fontSize(10)
+            .fontWeight(FontWeight.Medium)
+        }
+        .width(70)
+        .height(70)
+        .alignItems(HorizontalAlign.Center)
+        .justifyContent(FlexAlign.Center)
+        .clip(new Circle({ width: 70, height: 70 }))
+        .backgroundColor("#FF9966")
+        .alignRules({
+          bottom: { anchor: "id_stack_content", align: VerticalAlign.Bottom },
+          right: { anchor: "id_stack_content", align: HorizontalAlign.End }
+        })
+        .onClick((event) => {
+          this.listController.scrollEdge(Edge.Top)
+        })
+        .margin({ right: 15, bottom: 15 })
+        .id("id_to_top")
+
+      }.width('100%')
+      .height('100%')
     }
-    .height('100%')
-    .alignContent(Alignment.Top)
-    .backgroundColor($r('app.color.common_color_page_bg'))
   }
 }
 

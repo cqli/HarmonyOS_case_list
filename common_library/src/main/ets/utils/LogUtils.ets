@@ -9,17 +9,17 @@ export class LogUtils {
    * 建议开发者在应用内根据需要自定义划分。
    * 这个领域标识应该还没完全理解。。。。。。。。。。。
    */
-  private mDomain = 0x0001
+  private static mDomain = 0x0001
   /**
    * 日志打印tag
    */
-  private LOG_TAG = "阿强的HOS"
-  private mLogSize = 800 //打印的最大长度，默认是800
-  private mHilog: boolean = true //默认是用hilog进行打印
+  private static LOG_TAG = "阿强的HOS"
+  private static mLogSize = 800 //打印的最大长度，默认是800
+  private static mHilog: boolean = true //默认是用hilog进行打印
   /**
    * 详细的流程记录，通过该级别的日志可以更详细地分析业务流程和定位分析问题。
    */
-  logDebug = (message: String) => {
+  static logDebug(message: String) {
     if (hilog.isLoggable(this.mDomain, this.LOG_TAG, hilog.LogLevel.DEBUG)) {
       this.logLevel(hilog.LogLevel.DEBUG, this.LOG_TAG, message)
     }
@@ -29,7 +29,7 @@ export class LogUtils {
    * 用于记录可预料的非正常情况信息，如无网络信号、登录失败等。
    * 这些日志都应该由该业务内处于支配地位的模块来记录，避免在多个被调用的模块或低级函数中重复记录。
    */
-  logInfo = (message: String) => {
+  static logInfo(message: String) {
     if (hilog.isLoggable(this.mDomain, this.LOG_TAG, hilog.LogLevel.INFO)) {
       this.logLevel(hilog.LogLevel.INFO, this.LOG_TAG, message)
     }
@@ -38,7 +38,7 @@ export class LogUtils {
    * 用于记录较为严重的非预期情况，但是对用户影响不大，
    * 应用可以自动恢复或通过简单的操作就可以恢复的问题。
    */
-  logWarn = (message: String) => {
+  static logWarn(message: String) {
     if (hilog.isLoggable(this.mDomain, this.LOG_TAG, hilog.LogLevel.WARN)) {
       this.logLevel(hilog.LogLevel.WARN, this.LOG_TAG, message)
     }
@@ -47,7 +47,7 @@ export class LogUtils {
    * 应用发生了错误，该错误会影响功能的正常运行或用户的正常使用，
    * 可以恢复但恢复代价较高，如重置数据等。
    */
-  logError = (message: String) => {
+  static logError(message: String) {
     if (hilog.isLoggable(this.mDomain, this.LOG_TAG, hilog.LogLevel.ERROR)) {
       this.logLevel(hilog.LogLevel.ERROR, this.LOG_TAG, message)
     }
@@ -55,7 +55,7 @@ export class LogUtils {
   /**
    * 重大致命异常，表明应用即将崩溃，故障无法恢复。
    */
-  logFatal = (message: String) => {
+  static logFatal(message: String) {
     if (hilog.isLoggable(this.mDomain, this.LOG_TAG, hilog.LogLevel.FATAL)) {
       this.logLevel(hilog.LogLevel.FATAL, this.LOG_TAG, message)
     }
@@ -64,7 +64,7 @@ export class LogUtils {
   /*
   *统一输出日志
   * */
-  private async logLevel(level: hilog.LogLevel, tag: string, message: any) {
+  private static async logLevel(level: hilog.LogLevel, tag: string, message: any) {
     // const content = this.getMessage(level, tag, message) //最终的内容展示
     const content = JSON.stringify(JSON.parse(message), null, "   ") //最终的内容展示
     const len = content.length / this.mLogSize
@@ -165,6 +165,3 @@ export class LogUtils {
   }
 }
 
-let logUtils = new LogUtils()
-
-export default logUtils as LogUtils

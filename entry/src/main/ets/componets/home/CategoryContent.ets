@@ -1,27 +1,22 @@
 /**
  * 卡消费
  */
-import systemTime from '@ohos.systemTime';
-import systemDateTime from '@ohos.systemDateTime';
 import { getTreeData } from '../../apis/HomeApi';
-import ClassifyModel from '../../bean/category/ClassifyModel';
-import ClassifyViewModel from '../../bean/category/ClassifyViewModel';
-import CourseModel from '../../bean/category/CourseModel';
 import { TreeItem } from '../../bean/TreeBean';
 import { Constants } from '../../common/constants/Constants';
-import logUtils from '../../../../../../common_library/src/main/ets/utils/LogUtils';
 import ClassifyItem from '../../view/category/ClassityItem';
 import CourseItem from '../../view/category/CourseItem';
 import { AppUtils } from '../../utils/AppUtils';
+import { BaseComponent, LOAD_LOADING, LOAD_SHOW_CONTENT } from '../BaseComponent';
 
 @Component
 export struct CategoryTabContent {
-
   @State currentClassify: number = 0; // selected classify index.
   @State requestSuccess: boolean = false; // is loading data.
   private classifyList: Array<TreeItem> = [];
   private classifyScroller: Scroller = new Scroller();
   private scroller: Scroller = new Scroller();
+  @State loadState: number = LOAD_LOADING
 
   aboutToAppear() {
 
@@ -29,6 +24,7 @@ export struct CategoryTabContent {
 
       this.classifyList = data
       this.requestSuccess = true;
+      this.loadState = LOAD_SHOW_CONTENT
     })
 
     // loading data.
@@ -67,56 +63,59 @@ export struct CategoryTabContent {
   }
 
   build() {
-    Row() {
-      if (this.requestSuccess) {
-        List({ scroller: this.classifyScroller }) {
-          ForEach(this.classifyList, (item: TreeItem, index?: number) => {
-            ListItem() {
-              ClassifyItem({
-                classifyName: item.name,
-                isSelected: this.currentClassify === index,
-                onClickAction: () => {
-                  if (index !== undefined) {
-                    this.classifyChangeAction(index, true);
+    BaseComponent({ loadingState: this.loadState }) {
+      Row() {
+        if (this.requestSuccess) {
+          List({ scroller: this.classifyScroller }) {
+            ForEach(this.classifyList, (item: TreeItem, index?: number) => {
+              ListItem() {
+                ClassifyItem({
+                  classifyName: item.name,
+                  isSelected: this.currentClassify === index,
+                  onClickAction: () => {
+                    if (index !== undefined) {
+                      this.classifyChangeAction(index, true);
+                    }
                   }
-                }
-              })
-            }
-          })
-        }
-        .height(Constants.FULL_LENGTH)
-        .width($r('app.float.classify_item_width'))
-        .backgroundColor($r('app.color.classify_background'))
-        .scrollBar(BarState.Off)
-
-        List({ scroller: this.scroller }) {
-          ForEach(this.classifyList, (classifyItem: TreeItem) => {
-            ListItemGroup({
-              header: this.ClassifyHeader(classifyItem.name),
-              space: 12
-            }) {
-              ForEach(classifyItem.children, (courseItem: TreeItem) => {
-                ListItem() {
-                  CourseItem({ itemStr: JSON.stringify(courseItem), cover: classifyItem.cover })
-                }
-              }, (courseItem: TreeItem) => `${courseItem.id}`)
-            }
-          }, (item: TreeItem) => `${item.id}`)
-        }
-        .padding({ left: $r('app.float.item_padding_left'), right: $r('app.float.course_item_padding') })
-        .sticky(StickyStyle.Header)
-        .layoutWeight(1)
-        .edgeEffect(EdgeEffect.None)
-        .onScrollIndex((start: number) => this.classifyChangeAction(start, false))
-      } else {
-        Text($r('app.string.loading'))
-          .fontFamily($r('app.string.hei_ti_medium'))
-          .textAlign(TextAlign.Center)
+                })
+              }
+            })
+          }
           .height(Constants.FULL_LENGTH)
-          .width(Constants.FULL_LENGTH)
+          .width($r('app.float.classify_item_width'))
+          .backgroundColor($r('app.color.classify_background'))
+          .scrollBar(BarState.Off)
+
+          List({ scroller: this.scroller }) {
+            ForEach(this.classifyList, (classifyItem: TreeItem) => {
+              ListItemGroup({
+                header: this.ClassifyHeader(classifyItem.name),
+                space: 12
+              }) {
+                ForEach(classifyItem.children, (courseItem: TreeItem) => {
+                  ListItem() {
+                    CourseItem({ itemStr: JSON.stringify(courseItem), cover: classifyItem.cover })
+                  }
+                }, (courseItem: TreeItem) => `${courseItem.id}`)
+              }
+            }, (item: TreeItem) => `${item.id}`)
+          }
+          .padding({ left: $r('app.float.item_padding_left'), right: $r('app.float.course_item_padding') })
+          .sticky(StickyStyle.Header)
+          .layoutWeight(1)
+          .edgeEffect(EdgeEffect.None)
+          .onScrollIndex((start: number) => this.classifyChangeAction(start, false))
+        } else {
+          Text($r('app.string.loading'))
+            .fontFamily($r('app.string.hei_ti_medium'))
+            .textAlign(TextAlign.Center)
+            .height(Constants.FULL_LENGTH)
+            .width(Constants.FULL_LENGTH)
+        }
       }
+      .padding({ top: AppUtils.getInstance().getStateBarHeight() })
+      .backgroundColor($r('app.color.base_background'))
     }
-    .padding({ top: AppUtils.getInstance().getStateBarHeight() })
-    .backgroundColor($r('app.color.base_background'))
+
   }
 }

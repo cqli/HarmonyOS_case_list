@@ -12,18 +12,10 @@ import { AppUtils } from '../utils/AppUtils';
 @Entry
 @Component
 struct SplashScreenPage {
-  aboutToAppear(){
-    window.getLastWindow(getContext(this), (err, data) => {
-      if (err.code === 0) {
-        data.setWindowLayoutFullScreen(true)
-        AppUtils.getInstance().setStateBarHeight(px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
-          .topRect.height))
+  aboutToAppear() {
 
-        AppUtils.getInstance().setBottomBarHeight(px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
-          .bottomRect.height))
-      }
-    })
   }
+
   @State pageShowTime: number = 0;
   @State intervalID: number = 0;
   @State topBarHeight: number = 0
@@ -55,8 +47,11 @@ struct SplashScreenPage {
     window.getLastWindow(getContext(this), (err, data) => {
       if (err.code === 0) {
         data.setWindowLayoutFullScreen(true)
-        this.topBarHeight =
-        px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+        AppUtils.getInstance().setStateBarHeight(px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+          .topRect.height))
+        AppUtils.getInstance().setBottomBarHeight(px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
+          .bottomRect.height))
+        this.topBarHeight = px2vp(data.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM)
           .topRect.height)
       }
     })

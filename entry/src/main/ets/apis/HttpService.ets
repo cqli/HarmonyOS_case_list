@@ -3,9 +3,9 @@
  */
 
 import http from '@ohos.net.http';
+import { LogUtils } from '../../../../../common_library/src/main/ets/utils/LogUtils';
 import ResponseResult from '../bean/ResponseResult';
 import HttpConfig from '../http/HttpConfig';
-import logUtils from '../../../../../common_library/src/main/ets/utils/LogUtils';
 
 /**
  * Initiate an HTTP GET request to the specified URL.
@@ -33,7 +33,7 @@ export function httpRequestPost(url: string, params: Object) {
  * @param url URL for initiating an HTTP request
  * @param method Request method.
  * @param extraData Additional data of the request.
- * @returns Returns {@link ResponseResult}.
+ * @returns Returns { @link  ResponseResult}.
  */
 function httpRequest(url: string, method: http.RequestMethod, params?: Object): Promise<ResponseResult<any>> {
   let httpRequest = http.createHttp();
@@ -51,18 +51,10 @@ function httpRequest(url: string, method: http.RequestMethod, params?: Object): 
   // Processes the data and returns.
   return responseResult.then((value: http.HttpResponse) => {
 
-
     if (value.responseCode === HttpConfig.HTTP_CODE_200) {
       // Obtains the returned data.
       let result = `${value.result}`;
-
-      logUtils.logDebug(result)
-      // let resultJson: ResponseResult<T> = JSON.parse(result);
-      // if (resultJson.code === HttpConfig.SERVER_CODE_SUCCESS) {
-      //   serverData.data = resultJson.data;
-      // }
-      // serverData.code = resultJson.code;
-      // serverData.code = resultJson.code;
+      LogUtils.logDebug(result)
       serverData = JSON.parse(result)
     } else {
       serverData = new ResponseResult<any>();

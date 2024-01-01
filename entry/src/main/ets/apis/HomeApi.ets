@@ -10,6 +10,10 @@ import ArrayList from '@ohos.util.ArrayList'
 import { bannerReq, treeListReq, treeReq } from './HttpRequest'
 import { Banner } from '../bean/BannerBean'
 import { TreeArticle, TreeItem } from '../bean/TreeBean'
+import { Net } from '@app/net/src/main/ets/utils/Net'
+import http from '@ohos.net.http'
+import { LogUtils } from '../../../../../common_library/src/main/ets/utils/LogUtils'
+import { NetError } from '@app/net/src/main/ets/error/NetError'
 
 /**
  * 首页接口
@@ -20,33 +24,47 @@ const articleListUrl: string = HttpConfig.baseURL + 'article/list';
 
 
 /**
- * 获取首页数据
+ * 获取首页置顶数据
  * @returns
  */
-export const getHomeInfo = (): Promise<ArrayList<Article>> => {
-  return new Promise(async (resolve: Function, reject: Function) => {
-    httpRequestGet(HOME_PAGE_INDEX)
-      .then((data: ResponseResult<ArrayList<Article>>) => {
-        if (data.errorCode === HttpConfig.SERVER_CODE_SUCCESS) {
-          resolve(data.data);
-        } else {
-          reject($r('app.string.page_none_msg'));
-        }
-      })
+export const getHomeInfo = (success: (result: Array<Article>) => void): http.HttpRequest => {
+  return Net.get(HOME_PAGE_INDEX).requestObject<ResponseResult<Array<Article>>>((data) => {
+    //data 为 返回的TestModel对象
+    success(data.data)
+  }, (errorMsg) => {
+    LogUtils.logDebug(errorMsg.getMessage())
   })
+
+  // return new Promise(async (resolve: Function, reject: Function) => {
+  //   httpRequestGet(HOME_PAGE_INDEX)
+  //     .then((data: ResponseResult<ArrayList<Article>>) => {
+  //       if (data.errorCode === HttpConfig.SERVER_CODE_SUCCESS) {
+  //         resolve(data.data);
+  //       } else {
+  //         reject($r('app.string.page_none_msg'));
+  //       }
+  //     })
+  // })
 }
 
-export const getHomePageList = (page: number): Promise<ArrayList<Article>> => {
-  return new Promise(async (resolve: Function, reject: Function) => {
-    httpRequestGet(`${articleListUrl}/${page}/json`)
-      .then((rsp: ResponseResult<ArticleList>) => {
-        if (rsp.errorCode === HttpConfig.SERVER_CODE_SUCCESS) {
-          resolve(rsp.data.datas);
-        } else {
-          reject($r('app.string.page_none_msg'));
-        }
-      })
+export const getHomePageList = (page: number, success: (result: Array<Article>) => void, failed: (error: NetError) => void): http.HttpRequest => {
+  // return new Promise(async (resolve: Function, reject: Function) => {
+  return Net.get(`${articleListUrl}/${page}/json`).requestObject<ResponseResult<ArticleList>>((data) => {
+    //data 为 返回的TestModel对象
+    success(data.data.datas)
+  }, (errorMsg) => {
+    failed(errorMsg)
+    LogUtils.logDebug(errorMsg.getMessage())
   })
+  //   httpRequestGet(`${articleListUrl}/${page}/json`)
+  //     .then((rsp: ResponseResult<ArticleList>) => {
+  //       if (rsp.errorCode === HttpConfig.SERVER_CODE_SUCCESS) {
+  //         resolve(rsp.data.datas);
+  //       } else {
+  //         reject($r('app.string.page_none_msg'));
+  //       }
+  //     })
+  // })
 }
 
 export const getBanner = (): Promise<Array<Banner>> => {

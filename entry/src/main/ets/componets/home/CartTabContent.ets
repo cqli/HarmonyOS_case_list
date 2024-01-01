@@ -49,8 +49,8 @@ export struct CartTabContent {
     Flex({ direction: FlexDirection.Column }) {
 
 
-      CartDefaultAddress()
-        .height(56)
+      // CartDefaultAddress()
+      //   .height(56)
       SmartRefreshLayout()
         .height('100%')
         .flexGrow(1)

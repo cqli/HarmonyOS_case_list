@@ -1,17 +1,8 @@
-/**
- * 问答页面
- */
-import ClassifyModel from '../../bean/category/ClassifyModel';
-import ClassifyViewModel from '../../bean/category/ClassifyViewModel';
-import CourseModel from '../../bean/category/CourseModel';
 import { Constants } from '../../common/constants/Constants';
 import { AppUtils } from '../../utils/AppUtils';
-import ClassifyItem from '../../view/category/ClassityItem';
-import CourseItem from '../../view/category/CourseItem';
 
 @Component
 export struct AnswersTabContent {
-
   aboutToAppear() {
     //
   }

@@ -30,7 +30,7 @@ export struct SmartRefreshLayout {
           .height(70)
           .margin({ top: -35 })
 
-        Text('中间区域')
+        Text('我想写一个SmartRefreshLayout')
           .layoutWeight(1)
 
         LoadMoreLayout()

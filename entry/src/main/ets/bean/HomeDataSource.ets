@@ -2,7 +2,7 @@ import ArrayList from '@ohos.util.ArrayList';
 import { BaseDataSource } from './BaseDataSource';
 
 export class HomeDataSource extends BaseDataSource {
-  private dataArray: ArrayList<any> = new ArrayList<any>();
+  private dataArray: Array<any> = new Array<any>();
 
   public totalCount(): number {
     return this.dataArray.length;
@@ -17,9 +17,9 @@ export class HomeDataSource extends BaseDataSource {
    * 追加数据
    * @param newData
    */
-  public addAll(newData: ArrayList<any>) {
+  public addAll(newData: Array<any>) {
     newData.forEach((value, index) => {
-      this.dataArray.add(value)
+      this.dataArray.push(value)
       this.notifyDataAdd(index)
     })
   }
@@ -27,12 +27,12 @@ export class HomeDataSource extends BaseDataSource {
    * 刷新数据
    * @param newData
    */
-  public setNewData(newData: ArrayList<any>) {
-    this.dataArray.clear()
+  public setNewData(newData: Array<any>) {
+    this.dataArray = []
     newData.forEach((value, index) => {
-      this.dataArray.add(value)
-      this.notifyDataAdd(index)
+      this.dataArray.push(value)
     })
+    this.notifyDataReload()
   }
   /**
    * 指定index下添加数据
@@ -40,7 +40,7 @@ export class HomeDataSource extends BaseDataSource {
    * @param data
    */
   public addData(index: number, data: any): void {
-    this.dataArray.insert(data, index);
+    this.dataArray.splice(index, 0, data);
     this.notifyDataAdd(index);
   }
   /**
@@ -48,7 +48,7 @@ export class HomeDataSource extends BaseDataSource {
    * @param data
    */
   public pushData(data: any): void {
-    this.dataArray.add(data);
+    this.dataArray.push(data);
     this.notifyDataAdd(this.dataArray.length - 1);
   }
 }
